@@ -6,12 +6,11 @@ Installation
 --------
 - Copy `config.json.sample` to `config.json`
 - Install dependency components with bower
-- Compile front app sources with gulp
 
 ```sh
-$ cp config.json.sample config.json
-$ bower install
-$ gulp
+cp config.json.sample config.json
+npm install
+npm run webpack
 ```
 
 Run
@@ -19,9 +18,13 @@ Run
 - Run the app server
 
 ```sh
-$ coffee server.coffee
+npm start
 ```
-You will be able to see soon: `http://<your host>:8080/`
+or 
+```sh
+node ./src/server.js
+```
+Then type to your browser address bar: `http://localhost:8080/`
 
 Example
 --------

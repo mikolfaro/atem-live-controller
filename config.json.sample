@@ -1,6 +1,6 @@
 {
   "switchers": [
-    { "type": "atem", "addr": "172.16.0.101" }
+    { "type": "atem", "addr": "192.168.88.240" }
   ],
   "channels": [
     { "device": 0, "input": 1 },
