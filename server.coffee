@@ -92,4 +92,27 @@ app.post('/api/changeUpstreamKeyNextState', (req, res) ->
   res.send('success')
 )
 
+app.post('/api/changeDownstreamKeyOn', (req, res) ->
+  device = req.body.device
+  number = req.body.number
+  state  = req.body.state
+  switchers[device].changeDownstreamKeyOn(number, state)
+  res.send('success')
+)
+
+app.post('/api/changeDownstreamKeyTie', (req, res) ->
+  device = req.body.device
+  number = req.body.number
+  state  = req.body.state
+  switchers[device].changeDownstreamKeyTie(number, state)
+  res.send('success')
+)
+
+app.post('/api/autoDownstreamKey', (req, res) ->
+  device = req.body.device
+  number = req.body.number
+  switchers[device].autoDownstreamKey(number)
+  res.send('success')
+)
+
 app.listen(8080)
