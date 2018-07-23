@@ -111,10 +111,10 @@
               <div class="button float-left"
                    ng-click="cutTransition()">Cut</div>
               <div class="button float-left"
-                   ng-class="{red: state[0].video.transitionPosition != 0}"
+                   ng-class="{red: state[0].video.ME[0].transitionPosition != 0}"
                    ng-click="autoTransition()">Auto</div>
               <div class="button float-left"
-                   ng-class="{red: state[0].video.transitionPreview != 0}"
+                   ng-class="{red: state[0].video.ME[0].transitionPreview != 0}"
                    ng-click="changeTransitionPreview()">PREV</div>
               <div class="sliders float-left" style="margin-left: 50px;">
                 <div class="slider"></div>
@@ -127,13 +127,13 @@
               </div>
               <div class="channels after-clear">
                 <div class="button float-left"
-                     ng-class="{yellow: state[0].video.transitionStyle == 0}"
+                     ng-class="{yellow: state[0].video.ME[0].transitionStyle == 0}"
                      ng-click="changeTransitionType(0)">MIX</div>
                 <div class="button float-left"
-                     ng-class="{yellow: state[0].video.transitionStyle == 1}"
+                     ng-class="{yellow: state[0].video.ME[0].transitionStyle == 1}"
                      ng-click="changeTransitionType(1)">DIP</div>
                 <div class="button float-left"
-                     ng-class="{yellow: state[0].video.transitionStyle == 2}"
+                     ng-class="{yellow: state[0].video.ME[0].transitionStyle == 2}"
                      ng-click="changeTransitionType(2)">WIPE</div>
               </div>
             </div>
@@ -144,14 +144,48 @@
               </div>
               <div class="channels after-clear">
                 <div class="button float-left"
-                     ng-class="{yellow: state[0].video.upstreamKeyNextBackground}"
+                     ng-class="{yellow: state[0].video.ME[0].upstreamKeyNextBackground}"
                      ng-click="toggleUpstreamKeyNextBackground()">BKGD</div>
                 <div class="button float-left"
-                     ng-class="{yellow: state[0].video.upstreamKeyNextState[0]}"
+                     ng-class="{yellow: state[0].video.ME[0].upstreamKeyNextState[0]}"
                      ng-click="toggleUpstreamKeyNextState(0)">KEY1</div>
                 <div class="button float-left"
-                     ng-class="{red: state[0].video.upstreamKeyState[0]}"
+                     ng-class="{red: state[0].video.ME[0].upstreamKeyState[0]}"
                      ng-click="toggleUpstreamKeyState(0)">ONAIR</div>
+              </div>
+            </div>
+
+            <div class="inline">
+              <div class="section">
+                Downstream Key 1
+              </div>
+              <div class="channels after-clear">
+                <div class="button float-left"
+                     ng-class="{yellow: state[0].video.downstreamKeyTie[0]}"
+                     ng-click="toggleDownstreamKeyTie(0)">TIE</div>
+                <div class="button float-left"
+                     ng-class="{red: state[0].video.downstreamKeyOn[0]}"
+                     ng-click="toggleDownstreamKeyOn(0)">ONAIR</div>
+                <div class="button float-left"
+                     ng-class="{red: state[0].video.autoDownstreamKey[0]}"
+                     ng-click="autoDownstreamKey(0)">AUTO</div>
+              </div>
+            </div>
+
+            <div class="inline">
+              <div class="section">
+                Downstream Key 2
+              </div>
+              <div class="channels after-clear">
+                <div class="button float-left"
+                     ng-class="{yellow: state[0].video.downstreamKeyTie[1]}"
+                     ng-click="toggleDownstreamKeyTie(1)">TIE</div>
+                <div class="button float-left"
+                     ng-class="{red: state[0].video.downstreamKeyOn[1]}"
+                     ng-click="toggleDownstreamKeyOn(1)">ONAIR</div>
+                <div class="button float-left"
+                     ng-class="{red: state[0].video.autoDownstreamKey[1]}"
+                     ng-click="autoDownstreamKey(1)">AUTO</div>
               </div>
             </div>
           </div>

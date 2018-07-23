@@ -14,28 +14,28 @@ angular
           return channel if channel.device == device && channel.chainDevice == targetDevice
 
       getParentProgramChannel = ->
-        findChannel(0, $scope.state[0].video.programInput)
+        findChannel(0, $scope.state[0].video.ME[0].programInput)
 
       getVirtualProgramChannel = ->
-        parentProgramChannel = findChannel(0, $scope.state[0].video.programInput)
+        parentProgramChannel = findChannel(0, $scope.state[0].video.ME[0].programInput)
         if parentProgramChannel.chainDevice?
-          findChannel(parentProgramChannel.chainDevice, $scope.state[parentProgramChannel.chainDevice].video.programInput)
+          findChannel(parentProgramChannel.chainDevice, $scope.state[parentProgramChannel.chainDevice].video.ME[0].programInput)
         else
-          findChannel(0, $scope.state[0].video.programInput)
+          findChannel(0, $scope.state[0].video.ME[0].programInput)
 
       getVirtualPreviewChannel = ->
-        parentProgramChannel = findChannel(0, $scope.state[0].video.programInput)
-        parentPreviewChannel = findChannel(0, $scope.state[0].video.previewInput)
+        parentProgramChannel = findChannel(0, $scope.state[0].video.ME[0].programInput)
+        parentPreviewChannel = findChannel(0, $scope.state[0].video.ME[0].previewInput)
         if parentPreviewChannel.chainDevice? && parentProgramChannel.chainDevice == parentPreviewChannel.chainDevice
-          findChannel(parentPreviewChannel.chainDevice, $scope.state[parentPreviewChannel.chainDevice].video.previewInput)
+          findChannel(parentPreviewChannel.chainDevice, $scope.state[parentPreviewChannel.chainDevice].video.ME[0].previewInput)
         else if parentPreviewChannel.chainDevice?
-          findChannel(parentPreviewChannel.chainDevice, $scope.state[parentPreviewChannel.chainDevice].video.programInput)
+          findChannel(parentPreviewChannel.chainDevice, $scope.state[parentPreviewChannel.chainDevice].video.ME[0].programInput)
         else
-          findChannel(0, $scope.state[0].video.previewInput)
+          findChannel(0, $scope.state[0].video.ME[0].previewInput)
 
       getTransitionDevice = ->
-        parentProgramChannel = findChannel(0, $scope.state[0].video.programInput)
-        parentPreviewChannel = findChannel(0, $scope.state[0].video.previewInput)
+        parentProgramChannel = findChannel(0, $scope.state[0].video.ME[0].programInput)
+        parentPreviewChannel = findChannel(0, $scope.state[0].video.ME[0].previewInput)
         console.log parentProgramChannel, parentPreviewChannel
         if parentPreviewChannel.chainDevice? && parentProgramChannel.chainDevice == parentPreviewChannel.chainDevice
           parentPreviewChannel.chainDevice
@@ -84,16 +84,27 @@ angular
         $http.post('/api/changeTransitionType', type: type).success(defaultSuccess)
 
       $scope.toggleUpstreamKeyNextBackground = ->
-        state = !$scope.state[0].video.upstreamKeyNextBackground
+        state = !$scope.state[0].video.ME[0].upstreamKeyNextBackground
         $http.post('/api/changeUpstreamKeyNextBackground', device: 0, state: state).success(defaultSuccess)
 
       $scope.toggleUpstreamKeyNextState = (number) ->
-        state = !$scope.state[0].video.upstreamKeyNextState[number]
+        state = !$scope.state[0].video.ME[0].upstreamKeyNextState[number]
         $http.post('/api/changeUpstreamKeyNextState', device: 0, number: number, state: state).success(defaultSuccess)
 
       $scope.toggleUpstreamKeyState = (number) ->
-        state = !$scope.state[0].video.upstreamKeyState[number]
+        state = !$scope.state[0].video.ME[0].upstreamKeyState[number]
         $http.post('/api/changeUpstreamKeyState', device: 0, number: number, state: state).success(defaultSuccess)
+
+      $scope.toggleDownstreamKeyTie = (number) ->
+        state = !$scope.state[0].video.downstreamKeyTie[number]
+        $http.post('/api/changeDownstreamKeyTie', device: 0, number: number, state: state).success(defaultSuccess)
+
+      $scope.toggleDownstreamKeyOn = (number) ->
+        state = !$scope.state[0].video.downstreamKeyOn[number]
+        $http.post('/api/changeDownstreamKeyOn', device: 0, number: number, state: state).success(defaultSuccess)
+
+      $scope.autoDownstreamKey = (number) ->
+        $http.post('/api/autoDownstreamKey', device: 0, number: number).success(defaultSuccess)
 
       registerSlider((err, percent) ->
         $scope.changeTransitionPosition(percent);
