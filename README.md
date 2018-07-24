@@ -5,7 +5,8 @@ The customizable video switchers web controller.
 Installation
 --------
 - Copy `config.json.sample` to `config.json`
-- Install dependency components with bower
+- Install dependencies with npm
+- Prepare assets with webpack
 
 ```sh
 cp config.json.sample config.json
