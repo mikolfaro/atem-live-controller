@@ -4,22 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "applest-atem": "^0.2.4",
     "body-parser": "^1.18.2",
-    "express": "^4.16.1"
-  },
-  "devDependencies": {
-    "coffeescript": "^1.9.3",
-    "gulp": "^3.9.0",
-    "gulp-coffee": "^3.0.2",
-    "gulp-notify": "^3.2.0",
-    "gulp-plumber": "^1.0.1",
-    "gulp-sass": "^4.0.0",
-    "gulp-watch": "^5.0.0"
+    "express": "^4.16.1",
+    "angular": "~1.4.3",
+    "hammerjs": "~2.0.4",
+    "copy-webpack-plugin": "^4.0.1",
+    "webpack": "^2.6.1"
   }
 }

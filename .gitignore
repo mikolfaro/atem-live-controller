@@ -1,5 +1,4 @@
 config.json
 node_modules/
 public/js/
-public/css/
-public/bower_components/
+.vscode/
