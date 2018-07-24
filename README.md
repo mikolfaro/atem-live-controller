@@ -25,6 +25,11 @@ or
 ```sh
 node ./src/server.js
 ```
+or
+run with [PM2](http://pm2.keymetrics.io/)
+```sh
+pm2 start process.yml
+```
 Then type to your browser address bar: `http://localhost:8080/`
 
 Example
