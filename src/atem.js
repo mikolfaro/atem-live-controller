@@ -8,7 +8,7 @@
 
 class ATEM {
     constructor() {
-        this._state = {
+        this.state = {
             "topology": {
                 "numberOfMEs": 1,
                 "numberOfSources": 18,
@@ -251,18 +251,9 @@ class ATEM {
             "device": 0,
             "_ver0": 2,
             "_ver1": 27,
-            "_pin": "ATEM Television Studio",
+            "_pin": "ATEM info not recieved",
             "model": 1
         }
-        this.updateVisibleChannels();
-    }
-
-    get state() {
-        return this._state;
-    }
-    set state(state) {
-        this._state = state;
-        this.updateVisibleChannels();
     }
 
     setWebsocket(websocket) {
@@ -279,46 +270,48 @@ class ATEM {
         }
     }
 
-    updateVisibleChannels() {
-        this.state.visibleChannels = [];
-        for (var id in this.state.channels) {
+    get visibleChannels() {
+        let visibleChannels = [];
+        // update channels
+        for (let id in this.state.channels) {
             const channel = this.state.channels[id];
             channel.id = id;
             channel.device = this.state.device;
             channel.input = id;
         }
         // standard inputs
-        for (var id = 1; id < 10; id++) {
+        for (let id = 1; id < 10; id++) {
             if (this.state.channels[id]) {
-                this.state.visibleChannels.push(this.state.channels[id]);
+                visibleChannels.push(this.state.channels[id]);
             } else {
                 break;
             }
         }
         // Black
         if (this.state.channels[0]) {
-            this.state.visibleChannels.push(this.state.channels[0]);
+            visibleChannels.push(this.state.channels[0]);
         }
         // Colors
-        for (var id = 2001; id < 3000; id++) {
+        for (let id = 2001; id < 3000; id++) {
             if (this.state.channels[id]) {
-                this.state.visibleChannels.push(this.state.channels[id]);
+                visibleChannels.push(this.state.channels[id]);
             } else {
                 break;
             }
         }
         // Color Bars
         if (this.state.channels[1000]) {
-            this.state.visibleChannels.push(this.state.channels[1000]);
+            visibleChannels.push(this.state.channels[1000]);
         }
         // Media Players
-        for (var id = 3010; id < 4000; id += 10) {
+        for (let id = 3010; id < 4000; id += 10) {
             if (this.state.channels[id]) {
-                this.state.visibleChannels.push(this.state.channels[id]);
+                visibleChannels.push(this.state.channels[id]);
             } else {
                 break;
             }
         }
+        return visibleChannels;
     }
 
     isProgramChannel(channel) {

@@ -21,18 +21,18 @@
     });
     ws.addEventListener("message", function(event) {
       let data = JSON.parse(event.data);
-      // console.log(data);
+      let device = data.device || 0;
+      console.log(data);
       switch (data.method) {
         case 'connect':
-          switchers[data.device || 0].connected = true;
+          switchers[device].connected = true;
         break;
         case 'disconnect':
-          switchers[data.device || 0].connected = false;
+          switchers[device].connected = false;
         break;
         default:
-          if (data.connected) {
-            switchers[data.device || 0].state = data;
-          }
+          switchers[device].connected = true;
+          switchers[device].state = data;
       }
       return data;
     });
@@ -98,7 +98,7 @@
   <section class="channels">
     <h3>Program & Preview</h3>
     <div class="well">
-      {#each atem.state.visibleChannels as channel}
+      {#each atem.visibleChannels as channel}
         <div
           class="button"
           class:red={atem.isProgramChannel(channel)}
@@ -113,13 +113,13 @@
   <section class="transition">
     <h3>Transition</h3>
     <div class="well">
-      <div class="button" on:click={atem.cutTransition}>
+      <div class="button" on:click={e=>atem.cutTransition()}>
         <p>CUT</p>
       </div>
       <div
         class="button"
         class:red={atem.state.video.ME[0].transitionPosition > 0}
-        on:click={atem.autoTransition}>
+        on:click={e=>atem.autoTransition()}>
         <p>AUTO</p>
       </div>
       <input class="slider" type="range"
@@ -250,7 +250,7 @@
       <div
         class="button"
         class:red={atem.state.video.ME[0].fadeToBlack}
-        on:click={atem.fadeToBlack}>
+        on:click={e=>atem.fadeToBlack()}>
         <p>FTB</p>
       </div>
     </div>

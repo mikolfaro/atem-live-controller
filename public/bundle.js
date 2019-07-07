@@ -316,7 +316,7 @@ var app = (function () {
 
     class ATEM {
         constructor() {
-            this._state = {
+            this.state = {
                 "topology": {
                     "numberOfMEs": 1,
                     "numberOfSources": 18,
@@ -559,18 +559,9 @@ var app = (function () {
                 "device": 0,
                 "_ver0": 2,
                 "_ver1": 27,
-                "_pin": "ATEM Television Studio",
+                "_pin": "ATEM info not recieved",
                 "model": 1
             };
-            this.updateVisibleChannels();
-        }
-
-        get state() {
-            return this._state;
-        }
-        set state(state) {
-            this._state = state;
-            this.updateVisibleChannels();
         }
 
         setWebsocket(websocket) {
@@ -587,46 +578,48 @@ var app = (function () {
             }
         }
 
-        updateVisibleChannels() {
-            this.state.visibleChannels = [];
-            for (var id in this.state.channels) {
+        get visibleChannels() {
+            let visibleChannels = [];
+            // update channels
+            for (let id in this.state.channels) {
                 const channel = this.state.channels[id];
                 channel.id = id;
                 channel.device = this.state.device;
                 channel.input = id;
             }
             // standard inputs
-            for (var id = 1; id < 10; id++) {
+            for (let id = 1; id < 10; id++) {
                 if (this.state.channels[id]) {
-                    this.state.visibleChannels.push(this.state.channels[id]);
+                    visibleChannels.push(this.state.channels[id]);
                 } else {
                     break;
                 }
             }
             // Black
             if (this.state.channels[0]) {
-                this.state.visibleChannels.push(this.state.channels[0]);
+                visibleChannels.push(this.state.channels[0]);
             }
             // Colors
-            for (var id = 2001; id < 3000; id++) {
+            for (let id = 2001; id < 3000; id++) {
                 if (this.state.channels[id]) {
-                    this.state.visibleChannels.push(this.state.channels[id]);
+                    visibleChannels.push(this.state.channels[id]);
                 } else {
                     break;
                 }
             }
             // Color Bars
             if (this.state.channels[1000]) {
-                this.state.visibleChannels.push(this.state.channels[1000]);
+                visibleChannels.push(this.state.channels[1000]);
             }
             // Media Players
-            for (var id = 3010; id < 4000; id += 10) {
+            for (let id = 3010; id < 4000; id += 10) {
                 if (this.state.channels[id]) {
-                    this.state.visibleChannels.push(this.state.channels[id]);
+                    visibleChannels.push(this.state.channels[id]);
                 } else {
                     break;
                 }
             }
+            return visibleChannels;
         }
 
         isProgramChannel(channel) {
@@ -3133,7 +3126,7 @@ var app = (function () {
 
     /******/ });
     });
-    //# sourceMappingURL=feather.js.map
+
     });
 
     var feather$1 = unwrapExports(feather);
@@ -3369,7 +3362,7 @@ var app = (function () {
     	};
     }
 
-    // (101:6) {#each atem.state.visibleChannels as channel}
+    // (101:6) {#each atem.visibleChannels as channel}
     function create_each_block_1(ctx) {
     	var div, p, t0_value = ctx.channel.label, t0, t1, dispose;
 
@@ -3383,11 +3376,11 @@ var app = (function () {
     			p = element("p");
     			t0 = text(t0_value);
     			t1 = space();
-    			add_location(p, file, 106, 10, 3274);
+    			add_location(p, file, 106, 10, 3272);
     			attr(div, "class", "button");
     			toggle_class(div, "red", ctx.atem.isProgramChannel(ctx.channel));
     			toggle_class(div, "green", ctx.atem.isPreviewChannel(ctx.channel));
-    			add_location(div, file, 101, 8, 3071);
+    			add_location(div, file, 101, 8, 3069);
     			dispose = listen(div, "click", click_handler);
     		},
 
@@ -3424,8 +3417,8 @@ var app = (function () {
     function create_if_block_1(ctx) {
     	var div, p, dispose;
 
-    	function click_handler_7(...args) {
-    		return ctx.click_handler_7(ctx, ...args);
+    	function click_handler_9(...args) {
+    		return ctx.click_handler_9(ctx, ...args);
     	}
 
     	return {
@@ -3433,11 +3426,11 @@ var app = (function () {
     			div = element("div");
     			p = element("p");
     			p.textContent = "STING";
-    			add_location(p, file, 182, 10, 5555);
+    			add_location(p, file, 182, 10, 5563);
     			attr(div, "class", "button");
     			toggle_class(div, "yellow", ctx.atem.state.video.ME[0].transitionStyle == 3);
-    			add_location(div, file, 178, 8, 5390);
-    			dispose = listen(div, "click", click_handler_7);
+    			add_location(div, file, 178, 8, 5398);
+    			dispose = listen(div, "click", click_handler_9);
     		},
 
     		m: function mount(target, anchor) {
@@ -3466,8 +3459,8 @@ var app = (function () {
     function create_if_block(ctx) {
     	var div, p, dispose;
 
-    	function click_handler_8(...args) {
-    		return ctx.click_handler_8(ctx, ...args);
+    	function click_handler_10(...args) {
+    		return ctx.click_handler_10(ctx, ...args);
     	}
 
     	return {
@@ -3475,11 +3468,11 @@ var app = (function () {
     			div = element("div");
     			p = element("p");
     			p.textContent = "DVE";
-    			add_location(p, file, 190, 10, 5817);
+    			add_location(p, file, 190, 10, 5825);
     			attr(div, "class", "button");
     			toggle_class(div, "yellow", ctx.atem.state.video.ME[0].transitionStyle == 4);
-    			add_location(div, file, 186, 8, 5652);
-    			dispose = listen(div, "click", click_handler_8);
+    			add_location(div, file, 186, 8, 5660);
+    			dispose = listen(div, "click", click_handler_10);
     		},
 
     		m: function mount(target, anchor) {
@@ -3542,20 +3535,12 @@ var app = (function () {
     	current_block_type_index_1 = select_block_type_1(ctx);
     	if_block1 = if_blocks_1[current_block_type_index_1] = if_block_creators_1[current_block_type_index_1](ctx);
 
-    	var each_value_1 = ctx.atem.state.visibleChannels;
+    	var each_value_1 = ctx.atem.visibleChannels;
 
     	var each_blocks = [];
 
     	for (var i = 0; i < each_value_1.length; i += 1) {
     		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
-    	}
-
-    	function input0_change_input_handler() {
-    		ctx.input0_change_input_handler.call(input0, ctx);
-    	}
-
-    	function input_handler(...args) {
-    		return ctx.input_handler(ctx, ...args);
     	}
 
     	function click_handler_1(...args) {
@@ -3564,6 +3549,14 @@ var app = (function () {
 
     	function click_handler_2(...args) {
     		return ctx.click_handler_2(ctx, ...args);
+    	}
+
+    	function input0_change_input_handler() {
+    		ctx.input0_change_input_handler.call(input0, ctx);
+    	}
+
+    	function input_handler(...args) {
+    		return ctx.input_handler(ctx, ...args);
     	}
 
     	function click_handler_3(...args) {
@@ -3582,17 +3575,17 @@ var app = (function () {
     		return ctx.click_handler_6(ctx, ...args);
     	}
 
+    	function click_handler_7(...args) {
+    		return ctx.click_handler_7(ctx, ...args);
+    	}
+
+    	function click_handler_8(...args) {
+    		return ctx.click_handler_8(ctx, ...args);
+    	}
+
     	var if_block2 = (ctx.atem.state.topology.numberOfStingers > 0) && create_if_block_1(ctx);
 
     	var if_block3 = (ctx.atem.state.topology.numberOfDVEs > 0) && create_if_block(ctx);
-
-    	function click_handler_9(...args) {
-    		return ctx.click_handler_9(ctx, ...args);
-    	}
-
-    	function click_handler_10(...args) {
-    		return ctx.click_handler_10(ctx, ...args);
-    	}
 
     	function click_handler_11(...args) {
     		return ctx.click_handler_11(ctx, ...args);
@@ -3608,6 +3601,18 @@ var app = (function () {
 
     	function click_handler_14(...args) {
     		return ctx.click_handler_14(ctx, ...args);
+    	}
+
+    	function click_handler_15(...args) {
+    		return ctx.click_handler_15(ctx, ...args);
+    	}
+
+    	function click_handler_16(...args) {
+    		return ctx.click_handler_16(ctx, ...args);
+    	}
+
+    	function click_handler_17(...args) {
+    		return ctx.click_handler_17(ctx, ...args);
     	}
 
     	function change_handler(...args) {
@@ -3782,177 +3787,177 @@ var app = (function () {
     			t68 = space();
     			input2 = element("input");
     			t69 = space();
-    			add_location(h1, file, 81, 2, 2211);
+    			add_location(h1, file, 81, 2, 2215);
     			attr(a0, "href", "#switcher");
     			attr(a0, "class", "tab");
-    			add_location(a0, file, 82, 2, 2240);
+    			add_location(a0, file, 82, 2, 2244);
     			attr(a1, "href", "#media");
     			attr(a1, "class", "tab");
-    			add_location(a1, file, 83, 2, 2309);
+    			add_location(a1, file, 83, 2, 2313);
     			attr(span0, "class", "tab connection-status");
     			attr(span0, "title", "Connection status: green=connected, red=disconnected");
     			toggle_class(span0, "connected", ctx.ws.readyState === 1);
-    			add_location(span0, file, 84, 2, 2372);
+    			add_location(span0, file, 84, 2, 2376);
     			attr(span1, "class", "tab connection-status");
     			attr(span1, "title", "Connection status: green=connected, red=disconnected");
     			toggle_class(span1, "connected", ctx.atem.connected);
-    			add_location(span1, file, 89, 2, 2634);
-    			add_location(header, file, 80, 0, 2200);
-    			add_location(h30, file, 98, 4, 2961);
+    			add_location(span1, file, 89, 2, 2638);
+    			add_location(header, file, 80, 0, 2204);
+    			add_location(h30, file, 98, 4, 2965);
     			attr(div0, "class", "well");
-    			add_location(div0, file, 99, 4, 2992);
+    			add_location(div0, file, 99, 4, 2996);
     			attr(section0, "class", "channels");
-    			add_location(section0, file, 97, 2, 2930);
-    			add_location(h31, file, 113, 4, 3386);
-    			add_location(p0, file, 116, 8, 3494);
+    			add_location(section0, file, 97, 2, 2934);
+    			add_location(h31, file, 113, 4, 3384);
+    			add_location(p0, file, 116, 8, 3497);
     			attr(div1, "class", "button");
-    			add_location(div1, file, 115, 6, 3435);
-    			add_location(p1, file, 122, 8, 3666);
+    			add_location(div1, file, 115, 6, 3433);
+    			add_location(p1, file, 122, 8, 3674);
     			attr(div2, "class", "button");
     			toggle_class(div2, "red", ctx.atem.state.video.ME[0].transitionPosition > 0);
-    			add_location(div2, file, 118, 6, 3524);
+    			add_location(div2, file, 118, 6, 3527);
     			attr(input0, "class", "slider");
     			attr(input0, "type", "range");
     			attr(input0, "min", "0");
     			attr(input0, "max", "1");
     			attr(input0, "step", "0.001");
-    			add_location(input0, file, 124, 6, 3697);
+    			add_location(input0, file, 124, 6, 3705);
     			attr(div3, "class", "well");
-    			add_location(div3, file, 114, 4, 3410);
+    			add_location(div3, file, 114, 4, 3408);
     			attr(section1, "class", "transition");
-    			add_location(section1, file, 112, 2, 3353);
-    			add_location(h32, file, 133, 4, 4005);
-    			add_location(p2, file, 139, 8, 4236);
+    			add_location(section1, file, 112, 2, 3351);
+    			add_location(h32, file, 133, 4, 4013);
+    			add_location(p2, file, 139, 8, 4244);
     			attr(div4, "class", "button");
     			toggle_class(div4, "yellow", ctx.atem.state.video.ME[0].upstreamKeyNextBackgroundState);
-    			add_location(div4, file, 135, 6, 4059);
-    			add_location(br0, file, 145, 13, 4427);
-    			add_location(p3, file, 145, 8, 4422);
+    			add_location(div4, file, 135, 6, 4067);
+    			add_location(br0, file, 145, 13, 4435);
+    			add_location(p3, file, 145, 8, 4430);
     			attr(div5, "class", "button");
     			toggle_class(div5, "red", ctx.atem.state.video.ME[0].upstreamKeyState[0]);
-    			add_location(div5, file, 141, 6, 4267);
-    			add_location(p4, file, 151, 8, 4626);
+    			add_location(div5, file, 141, 6, 4275);
+    			add_location(p4, file, 151, 8, 4634);
     			attr(div6, "class", "button");
     			toggle_class(div6, "yellow", ctx.atem.state.video.ME[0].upstreamKeyNextState[0]);
-    			add_location(div6, file, 147, 6, 4460);
+    			add_location(div6, file, 147, 6, 4468);
     			attr(div7, "class", "well");
-    			add_location(div7, file, 134, 4, 4034);
+    			add_location(div7, file, 134, 4, 4042);
     			attr(section2, "class", "next-transition");
-    			add_location(section2, file, 132, 2, 3967);
-    			add_location(h33, file, 157, 4, 4718);
-    			add_location(p5, file, 163, 8, 4930);
+    			add_location(section2, file, 132, 2, 3975);
+    			add_location(h33, file, 157, 4, 4726);
+    			add_location(p5, file, 163, 8, 4938);
     			attr(div8, "class", "button");
     			toggle_class(div8, "yellow", ctx.atem.state.video.ME[0].transitionStyle == 0);
-    			add_location(div8, file, 159, 6, 4773);
-    			add_location(p6, file, 169, 8, 5117);
+    			add_location(div8, file, 159, 6, 4781);
+    			add_location(p6, file, 169, 8, 5125);
     			attr(div9, "class", "button");
     			toggle_class(div9, "yellow", ctx.atem.state.video.ME[0].transitionStyle == 1);
-    			add_location(div9, file, 165, 6, 4960);
-    			add_location(p7, file, 175, 8, 5304);
+    			add_location(div9, file, 165, 6, 4968);
+    			add_location(p7, file, 175, 8, 5312);
     			attr(div10, "class", "button");
     			toggle_class(div10, "yellow", ctx.atem.state.video.ME[0].transitionStyle == 2);
-    			add_location(div10, file, 171, 6, 5147);
-    			add_location(br1, file, 194, 15, 5937);
-    			add_location(p8, file, 194, 8, 5930);
+    			add_location(div10, file, 171, 6, 5155);
+    			add_location(br1, file, 194, 15, 5945);
+    			add_location(p8, file, 194, 8, 5938);
     			attr(div11, "class", "button");
-    			add_location(div11, file, 193, 6, 5861);
+    			add_location(div11, file, 193, 6, 5869);
     			attr(div12, "class", "well");
-    			add_location(div12, file, 158, 4, 4748);
+    			add_location(div12, file, 158, 4, 4756);
     			attr(section3, "class", "transition-style");
-    			add_location(section3, file, 156, 2, 4679);
-    			add_location(h34, file, 200, 4, 6029);
-    			add_location(p9, file, 206, 8, 6236);
+    			add_location(section3, file, 156, 2, 4687);
+    			add_location(h34, file, 200, 4, 6037);
+    			add_location(p9, file, 206, 8, 6244);
     			attr(div13, "class", "button");
     			toggle_class(div13, "yellow", ctx.atem.state.video.downstreamKeyTie[0]);
-    			add_location(div13, file, 202, 6, 6084);
-    			add_location(br2, file, 212, 13, 6418);
-    			add_location(p10, file, 212, 8, 6413);
+    			add_location(div13, file, 202, 6, 6092);
+    			add_location(br2, file, 212, 13, 6426);
+    			add_location(p10, file, 212, 8, 6421);
     			attr(div14, "class", "button");
     			toggle_class(div14, "red", ctx.atem.state.video.downstreamKeyOn[0]);
-    			add_location(div14, file, 208, 6, 6266);
-    			add_location(p11, file, 218, 8, 6564);
+    			add_location(div14, file, 208, 6, 6274);
+    			add_location(p11, file, 218, 8, 6572);
     			attr(div15, "class", "button");
     			toggle_class(div15, "red", false);
-    			add_location(div15, file, 214, 6, 6451);
+    			add_location(div15, file, 214, 6, 6459);
     			attr(div16, "class", "well");
-    			add_location(div16, file, 201, 4, 6059);
+    			add_location(div16, file, 201, 4, 6067);
     			attr(section4, "class", "downstream-key");
-    			add_location(section4, file, 199, 2, 5992);
-    			add_location(h35, file, 223, 4, 6652);
-    			add_location(p12, file, 229, 8, 6859);
+    			add_location(section4, file, 199, 2, 6000);
+    			add_location(h35, file, 223, 4, 6660);
+    			add_location(p12, file, 229, 8, 6867);
     			attr(div17, "class", "button");
     			toggle_class(div17, "yellow", ctx.atem.state.video.downstreamKeyTie[1]);
-    			add_location(div17, file, 225, 6, 6707);
-    			add_location(br3, file, 235, 13, 7041);
-    			add_location(p13, file, 235, 8, 7036);
+    			add_location(div17, file, 225, 6, 6715);
+    			add_location(br3, file, 235, 13, 7049);
+    			add_location(p13, file, 235, 8, 7044);
     			attr(div18, "class", "button");
     			toggle_class(div18, "red", ctx.atem.state.video.downstreamKeyOn[1]);
-    			add_location(div18, file, 231, 6, 6889);
-    			add_location(p14, file, 241, 8, 7187);
+    			add_location(div18, file, 231, 6, 6897);
+    			add_location(p14, file, 241, 8, 7195);
     			attr(div19, "class", "button");
     			toggle_class(div19, "red", false);
-    			add_location(div19, file, 237, 6, 7074);
+    			add_location(div19, file, 237, 6, 7082);
     			attr(div20, "class", "well");
-    			add_location(div20, file, 224, 4, 6682);
+    			add_location(div20, file, 224, 4, 6690);
     			attr(section5, "class", "downstream-key");
-    			add_location(section5, file, 222, 2, 6615);
-    			add_location(h36, file, 247, 4, 7275);
-    			add_location(p15, file, 253, 8, 7455);
+    			add_location(section5, file, 222, 2, 6623);
+    			add_location(h36, file, 247, 4, 7283);
+    			add_location(p15, file, 253, 8, 7468);
     			attr(div21, "class", "button");
     			toggle_class(div21, "red", ctx.atem.state.video.ME[0].fadeToBlack);
-    			add_location(div21, file, 249, 6, 7327);
+    			add_location(div21, file, 249, 6, 7335);
     			attr(div22, "class", "well");
-    			add_location(div22, file, 248, 4, 7302);
+    			add_location(div22, file, 248, 4, 7310);
     			attr(section6, "class", "fade-to-black");
-    			add_location(section6, file, 246, 2, 7239);
+    			add_location(section6, file, 246, 2, 7247);
     			attr(div23, "id", "switcher");
     			attr(div23, "class", "screen");
-    			add_location(div23, file, 96, 0, 2893);
-    			add_location(h2, file, 260, 2, 7568);
+    			add_location(div23, file, 96, 0, 2897);
+    			add_location(h2, file, 260, 2, 7581);
     			attr(img0, "alt", "Upload Media 1");
-    			add_location(img0, file, 264, 4, 7746);
+    			add_location(img0, file, 264, 4, 7759);
     			attr(input1, "type", "file");
     			attr(input1, "name", "media");
-    			add_location(input1, file, 265, 4, 7779);
+    			add_location(input1, file, 265, 4, 7792);
     			attr(div24, "class", "media-thumb well");
-    			add_location(div24, file, 261, 2, 7585);
+    			add_location(div24, file, 261, 2, 7598);
     			attr(img1, "alt", "Upload Media 2");
-    			add_location(img1, file, 270, 4, 8043);
+    			add_location(img1, file, 270, 4, 8056);
     			attr(input2, "type", "file");
     			attr(input2, "name", "media");
-    			add_location(input2, file, 271, 4, 8076);
+    			add_location(input2, file, 271, 4, 8089);
     			attr(div25, "class", "media-thumb well");
-    			add_location(div25, file, 267, 2, 7882);
+    			add_location(div25, file, 267, 2, 7895);
     			attr(div26, "id", "media");
     			attr(div26, "class", "screen");
-    			add_location(div26, file, 259, 0, 7534);
+    			add_location(div26, file, 259, 0, 7547);
 
     			dispose = [
-    				listen(div1, "click", ctx.atem.cutTransition),
-    				listen(div2, "click", ctx.atem.autoTransition),
+    				listen(div1, "click", click_handler_1),
+    				listen(div2, "click", click_handler_2),
     				listen(input0, "change", input0_change_input_handler),
     				listen(input0, "input", input0_change_input_handler),
     				listen(input0, "input", input_handler),
-    				listen(div4, "click", click_handler_1),
-    				listen(div5, "click", click_handler_2),
-    				listen(div6, "click", click_handler_3),
-    				listen(div8, "click", click_handler_4),
-    				listen(div9, "click", click_handler_5),
-    				listen(div10, "click", click_handler_6),
+    				listen(div4, "click", click_handler_3),
+    				listen(div5, "click", click_handler_4),
+    				listen(div6, "click", click_handler_5),
+    				listen(div8, "click", click_handler_6),
+    				listen(div9, "click", click_handler_7),
+    				listen(div10, "click", click_handler_8),
     				listen(div11, "click", ctx.atem.changeTransitionPreview),
-    				listen(div13, "click", click_handler_9),
-    				listen(div14, "click", click_handler_10),
-    				listen(div15, "click", click_handler_11),
-    				listen(div17, "click", click_handler_12),
-    				listen(div18, "click", click_handler_13),
-    				listen(div19, "click", click_handler_14),
-    				listen(div21, "click", ctx.atem.fadeToBlack),
+    				listen(div13, "click", click_handler_11),
+    				listen(div14, "click", click_handler_12),
+    				listen(div15, "click", click_handler_13),
+    				listen(div17, "click", click_handler_14),
+    				listen(div18, "click", click_handler_15),
+    				listen(div19, "click", click_handler_16),
+    				listen(div21, "click", click_handler_17),
     				listen(input1, "change", change_handler),
     				listen(div24, "drop", drop_handler),
-    				listen(div24, "click", click_handler_15),
+    				listen(div24, "click", click_handler_18),
     				listen(input2, "change", change_handler_1),
     				listen(div25, "drop", drop_handler_1),
-    				listen(div25, "click", click_handler_16)
+    				listen(div25, "click", click_handler_19)
     			];
     		},
 
@@ -4148,7 +4153,7 @@ var app = (function () {
     			}
 
     			if (changed.switchers) {
-    				each_value_1 = ctx.atem.state.visibleChannels;
+    				each_value_1 = ctx.atem.visibleChannels;
 
     				for (var i = 0; i < each_value_1.length; i += 1) {
     					const child_ctx = get_each_context_1(ctx, each_value_1, i);
@@ -4354,11 +4359,11 @@ var app = (function () {
     	};
     }
 
-    function click_handler_15(e) {
+    function click_handler_18(e) {
     	return this.querySelector('input').click();
     }
 
-    function click_handler_16(e) {
+    function click_handler_19(e) {
     	return this.querySelector('input').click();
     }
 
@@ -4383,18 +4388,18 @@ var app = (function () {
         });
         ws.addEventListener("message", function(event) {
           let data = JSON.parse(event.data);
-          // console.log(data);
+          let device = data.device || 0;
+          console.log(data);
           switch (data.method) {
             case 'connect':
-              switchers[data.device || 0].connected = true; $$invalidate('switchers', switchers);
+              switchers[device].connected = true; $$invalidate('switchers', switchers);
             break;
             case 'disconnect':
-              switchers[data.device || 0].connected = false; $$invalidate('switchers', switchers);
+              switchers[device].connected = false; $$invalidate('switchers', switchers);
             break;
             default:
-              if (data.connected) {
-                switchers[data.device || 0].state = data; $$invalidate('switchers', switchers);
-              }
+              switchers[device].connected = true; $$invalidate('switchers', switchers);
+              switchers[device].state = data; $$invalidate('switchers', switchers);
           }
           return data;
         });
@@ -4433,6 +4438,14 @@ var app = (function () {
     		return atem.changePreview(channel);
     	}
 
+    	function click_handler_1({ atem }, e) {
+    		return atem.cutTransition();
+    	}
+
+    	function click_handler_2({ atem }, e) {
+    		return atem.autoTransition();
+    	}
+
     	function input0_change_input_handler({ atem, each_value, atem_index }) {
     		each_value[atem_index].state.video.ME[0].transitionPosition = to_number(this.value);
     		$$invalidate('switchers', switchers);
@@ -4442,60 +4455,64 @@ var app = (function () {
     		return atem.changeTransitionPosition(atem.state.video.ME[0].transitionPosition);
     	}
 
-    	function click_handler_1({ atem }, e) {
+    	function click_handler_3({ atem }, e) {
     		return atem.toggleUpstreamKeyNextBackground();
     	}
 
-    	function click_handler_2({ atem }, e) {
+    	function click_handler_4({ atem }, e) {
     		return atem.toggleUpstreamKeyState(0);
     	}
 
-    	function click_handler_3({ atem }, e) {
+    	function click_handler_5({ atem }, e) {
     		return atem.toggleUpstreamKeyNextState(0);
     	}
 
-    	function click_handler_4({ atem }, e) {
+    	function click_handler_6({ atem }, e) {
     		return atem.changeTransitionType(0);
     	}
 
-    	function click_handler_5({ atem }, e) {
+    	function click_handler_7({ atem }, e) {
     		return atem.changeTransitionType(1);
     	}
 
-    	function click_handler_6({ atem }, e) {
+    	function click_handler_8({ atem }, e) {
     		return atem.changeTransitionType(2);
     	}
 
-    	function click_handler_7({ atem }, e) {
+    	function click_handler_9({ atem }, e) {
     		return atem.changeTransitionType(3);
     	}
 
-    	function click_handler_8({ atem }, e) {
+    	function click_handler_10({ atem }, e) {
     		return atem.changeTransitionType(4);
     	}
 
-    	function click_handler_9({ atem }, e) {
+    	function click_handler_11({ atem }, e) {
     		return atem.toggleDownstreamKeyTie(0);
     	}
 
-    	function click_handler_10({ atem }, e) {
+    	function click_handler_12({ atem }, e) {
     		return atem.toggleDownstreamKeyOn(0);
     	}
 
-    	function click_handler_11({ atem }, e) {
+    	function click_handler_13({ atem }, e) {
     		return atem.autoDownstreamKey(0);
     	}
 
-    	function click_handler_12({ atem }, e) {
+    	function click_handler_14({ atem }, e) {
     		return atem.toggleDownstreamKeyTie(1);
     	}
 
-    	function click_handler_13({ atem }, e) {
+    	function click_handler_15({ atem }, e) {
     		return atem.toggleDownstreamKeyOn(1);
     	}
 
-    	function click_handler_14({ atem }, e) {
+    	function click_handler_16({ atem }, e) {
     		return atem.autoDownstreamKey(1);
+    	}
+
+    	function click_handler_17({ atem }, e) {
+    		return atem.fadeToBlack();
     	}
 
     	function change_handler({ atem }, e) {
@@ -4518,10 +4535,10 @@ var app = (function () {
     		switchers,
     		ws,
     		click_handler,
-    		input0_change_input_handler,
-    		input_handler,
     		click_handler_1,
     		click_handler_2,
+    		input0_change_input_handler,
+    		input_handler,
     		click_handler_3,
     		click_handler_4,
     		click_handler_5,
@@ -4534,6 +4551,9 @@ var app = (function () {
     		click_handler_12,
     		click_handler_13,
     		click_handler_14,
+    		click_handler_15,
+    		click_handler_16,
+    		click_handler_17,
     		change_handler,
     		drop_handler,
     		change_handler_1,

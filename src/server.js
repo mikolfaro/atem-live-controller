@@ -24,25 +24,23 @@ for (var switcher of config.switchers) {
 
   atem.on('stateChanged', (err, state) => {
     // console.log('atem stateChanged')
-    for (var client of CLIENTS) {
-      client.send(JSON.stringify(state));
-    }
+    broadcast(JSON.stringify(state));
   })
-
   atem.on('connect', (err) => {
     console.log('atem connected');
-    atem.connected = true;
+    broadcast(JSON.stringify({ method: 'connect', device: atem.device }));
   })
-
   atem.on('disconnect', (err) => {
     console.log('atem disconnected');
-    atem.connected = false;
-    for (var client of CLIENTS) {
-      client.send(JSON.stringify({device: atem.device, method: 'disconnect'}));
-    }
+    broadcast(JSON.stringify({ method: 'disconnect', device: atem.device }));
   })
-
   device += 1;
+}
+
+function broadcast(message) {
+  for (var client of CLIENTS) {
+    client.send(message);
+  }
 }
 
 app.use(fileUpload({
