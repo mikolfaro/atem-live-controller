@@ -1,134 +1,128 @@
 const express    = require('express');
-const app        = express();
-const bodyParser = require('body-parser');
-const ATEM       = require('applest-atem');
+const fileUpload = require('express-fileupload');
+const ATEM = require('applest-atem');
+const FileUploader = ATEM.FileUploader
 const config     = require('../config.json');
+const fs         = require('fs');
+
+const app = express();
+var expressWs = require('express-ws')(app);
 
 let atem;
 const switchers = [];
+
+let CLIENTS = expressWs.getWss().clients;
+
+let device = 0;
 for (var switcher of config.switchers) {
+  console.log('Initializing switcher', switcher.addr, switcher.port)
   atem = new ATEM;
   atem.event.setMaxListeners(5);
   atem.connect(switcher.addr, switcher.port);
+  atem.state.device = device;
   switchers.push(atem);
+
+  atem.on('stateChanged', (err, state) => {
+    // console.log('atem stateChanged')
+    broadcast(JSON.stringify(state));
+  })
+  atem.on('connect', (err) => {
+    console.log('atem connected');
+    broadcast(JSON.stringify({ method: 'connect', device: atem.device }));
+  })
+  atem.on('disconnect', (err) => {
+    console.log('atem disconnected');
+    broadcast(JSON.stringify({ method: 'disconnect', device: atem.device }));
+  })
+  device += 1;
 }
 
-app.use(bodyParser.json());
-app.use('/', express.static(__dirname + '/../public'));
+function broadcast(message) {
+  for (var client of CLIENTS) {
+    client.send(message);
+  }
+}
 
-app.get('/api/channels', (req, res) => res.send(JSON.stringify(config.channels)));
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 },
+}));
 
-app.get('/api/switchersState', (req, res) => {
-    const result = [];
-    for (atem of switchers) {
-        result.push(atem.state);
+app.post('/uploadMedia', function (req, res) {
+  console.log(req.files.media); // the uploaded file object
+  if (Object.keys(req.files).length == 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+  let fileUploader = new ATEM.FileUploader(switchers[0]);
+  fileUploader.uploadFromPNGBuffer(req.files.media.data, req.params.bankIndex || 0);
+  return res.status(200).send('Media was successfuly uploaded.');
+});
+
+app.use(express.static(__dirname + '/../public', {
+  index: 'index.html',
+}));
+
+app.ws('/ws', function(ws, req) {
+  const ip = req.connection.remoteAddress;
+  console.log(ip, 'connected');
+  // initialize client with all switchers
+  for (var atem of switchers) {
+    ws.send(JSON.stringify(atem.state));
+  }
+
+  ws.on('message', function incoming(message) {
+    /* JSON-RPC v2 compatible call */
+    console.log(message.slice(0, 500));
+    const data = JSON.parse(message);
+    const method = data.method;
+    const params = data.params;
+    const atem = switchers[params.device || 0];
+
+    switch (method) {
+      case 'changePreviewInput':
+      case 'changeProgramInput':
+        atem[method](params.input);
+      break;
+      case 'autoTransition':
+      case 'cutTransition':
+      case 'fadeToBlack':
+        atem[method]();
+      break;
+      case 'changeUpstreamKeyState':
+      case 'changeUpstreamKeyNextState':
+        atem[method](params.number, params.state);
+      break;
+      case 'changeDownstreamKeyOn':
+      case 'changeDownstreamKeyTie':
+        atem[method](params.number, params.state);
+      break;
+      case 'changeTransitionPreview':
+        atem[method](params.state, params.me);
+      break;
+      case 'changeTransitionPosition':
+        atem[method](params.position);
+      break;
+      case 'changeTransitionType':
+        atem[method](params.type);
+      break;
+      case 'changeUpstreamKeyNextBackground':
+        atem[method](params.state);
+      break;
+      case 'autoDownstreamKey':
+        atem[method](params.number);
+      break;
+      case 'uploadMedia':
+        let matches = params.media.match(/^data:(\w+\/\w+);base64,(.*)$/);
+        if (matches[1] == 'image/png') {
+          const buffer = Buffer.from(matches[2], 'base64');
+          // fs.writeFileSync('media'+number+'.png', buffer);
+          const fileUploader = new FileUploader(atem);
+          fileUploader.uploadFromPNGBuffer(buffer, params.number);
+        } else {
+          console.error('Uploaded image is not png');
+        }
+      break;
     }
-    res.send(JSON.stringify(result));
-  }
-);
-
-app.get('/api/switchersStatePolling', (req, res) => {
-    const result = [];
-    for (atem of switchers) {
-      result.push(
-        atem.once('stateChanged', (err, state) => {
-          const result1 = [];
-          for (atem of switchers) {
-            result1.push(atem.state);
-          }
-          res.end(JSON.stringify(result1))
-        })
-      );
-    }
-    return result;
-  }
-);
-
-app.post('/api/changePreviewInput', function(req, res) {
-  const { device } = req.body;
-  const { input }  = req.body;
-  switchers[device].changePreviewInput(input);
-  return res.send('success');
+  });
 });
 
-app.post('/api/changeProgramInput', function(req, res) {
-  const { device } = req.body;
-  const { input }  = req.body;
-  switchers[device].changeProgramInput(input);
-  return res.send('success');
-});
-
-app.post('/api/autoTransition', function(req, res) {
-  const { device } = req.body;
-  switchers[device].autoTransition();
-  return res.send('success');
-});
-
-app.post('/api/cutTransition', function(req, res) {
-  const { device } = req.body;
-  switchers[device].cutTransition();
-  return res.send('success');
-});
-
-app.post('/api/changeTransitionPosition', function(req, res) {
-  const { device }   = req.body;
-  const { position } = req.body;
-  switchers[device].changeTransitionPosition(position);
-  return res.send('success');
-});
-
-app.post('/api/changeTransitionType', function(req, res) {
-  const { type } = req.body;
-  for (switcher of switchers) {
-    switcher.changeTransitionType(type);
-  }
-  return res.send('success');
-});
-
-app.post('/api/changeUpstreamKeyState', function(req, res) {
-  const { device } = req.body;
-  const { number } = req.body;
-  const { state }  = req.body;
-  switchers[device].changeUpstreamKeyState(number, state);
-  return res.send('success');
-});
-
-app.post('/api/changeUpstreamKeyNextBackground', function(req, res) {
-  const { device } = req.body;
-  const { state }  = req.body;
-  switchers[device].changeUpstreamKeyNextBackground(state);
-  return res.send('success');
-});
-
-app.post('/api/changeUpstreamKeyNextState', function(req, res) {
-  const { device } = req.body;
-  const { number } = req.body;
-  const { state }  = req.body;
-  switchers[device].changeUpstreamKeyNextState(number, state);
-  return res.send('success');
-});
-
-app.post('/api/changeDownstreamKeyOn', function(req, res) {
-  const { device } = req.body;
-  const { number } = req.body;
-  const { state }  = req.body;
-  switchers[device].changeDownstreamKeyOn(number, state);
-  return res.send('success');
-});
-
-app.post('/api/changeDownstreamKeyTie', function(req, res) {
-  const { device } = req.body;
-  const { number } = req.body;
-  const { state }  = req.body;
-  switchers[device].changeDownstreamKeyTie(number, state);
-  return res.send('success');
-});
-
-app.post('/api/autoDownstreamKey', function(req, res) {
-  const { device } = req.body;
-  const { number } = req.body;
-  switchers[device].autoDownstreamKey(number);
-  return res.send('success');
-});
-
-app.listen(8080);
+app.listen(config.server.port, config.server.host);

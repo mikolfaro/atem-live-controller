@@ -1,21 +1,23 @@
-live-controller
-========
+# ATEM Live Controller
 The customizable video switchers web controller.
 
-Installation
---------
+# Features
+- Switching program/preview inputs
+- keyboard shortcuts as in original ATEM switchers app: 1-8 changes preview, Ctrl+1-8 changes program, Spacebar for CUT transition and Enter for AUTO transition.
+- websocket communication with server for more efficient and faster reactions
+- Svelte reactive frontend for simpler development
+- HTTP API for integration with other apps
+
+# Installation
 - Copy `config.json.sample` to `config.json`
-- Install dependencies with npm
-- Prepare assets with webpack
+- Install dependencies with npm `npm install` or `pnpm install` or `yarn install`
 
 ```sh
 cp config.json.sample config.json
 npm install
-npm run webpack
 ```
 
-Run
---------
+# Run
 - Run the app server
 
 ```sh
@@ -25,31 +27,44 @@ or
 ```sh
 node ./src/server.js
 ```
-or
-run with [PM2](http://pm2.keymetrics.io/)
+or run with [PM2](http://pm2.keymetrics.io/)
 ```sh
 pm2 start process.yml
 ```
-Then type to your browser address bar: `http://localhost:8080/`
+or when in development mode
+```sh
+npm start dev
+```
+Then go to this address in your browser: `http://localhost:8080/` or `http://host:port/` which is set in config.json.
 
-Example
---------
-![](docs/ipad-mini-demo.png)
+# Screenshots
+<img src="docs/screen-desktop.png" width="800">
+<img src="docs/screen-mobile.png" width="200">
 
-Contributing
---------
-1. Fork it ( https://github.com/applest/live-controller )
+# Contributing
+1. Fork it ( https://github.com/filiphanes/atem-live-controller )
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Add your feature
+3. Implement your feature
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
 6. Create new Pull Request
 
-License
---------
+# TODO
+- media uploads
+- settings tab
+- audio control tab
+- camera control tab
+- support more atem functionality
+
+# Thanks
+- Font made by "とろ庵" http://www.trojanbear.net/s/category/font
+- svelte framework
+- applest-atem library for communication with atem hardware
+
+# License
 The MIT License (MIT)
 
-Copyright (c) 2015 Yusei Yamanaka (miyukki)
+Copyright (c) 2019 Filip Hanes
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -68,8 +83,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-Thanks
---------
-This program is using the font made by "とろ庵"  
-http://www.trojanbear.net/s/category/font
