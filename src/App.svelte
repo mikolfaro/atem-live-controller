@@ -10,7 +10,10 @@
 
   function doConnect() {
     console.debug("Opening websocket...");
-    ws = new WebSocket(((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.host + "/ws");
+    let url  = window.location + "";
+    url = url.slice(0, url.lastIndexOf("/"));
+    url = url.replace("http", "ws");
+    ws = new WebSocket(url + "/ws");
     ws.addEventListener("open", function(event) {
       console.log("Websocket opened");
       intervalID = clearTimeout(intervalID);

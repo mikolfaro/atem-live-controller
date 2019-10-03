@@ -9,10 +9,10 @@
     "dev": "run-p start autobuild",
     "start": "node src/server.js"
   },
-  "author": "Filip Hanes <filip.hanes@pm.me>",
+  "author": "Filip Hanes <filip.hanes@protonmail.com>",
   "license": "MIT",
   "dependencies": {
-    "applest-atem": "0.4.2",
+    "applest-atem": "0.2.4",
     "express": "^4.16.1",
     "express-fileupload": "^1.1.5",
     "express-ws": "^4.0.0",
