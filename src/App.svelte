@@ -76,6 +76,7 @@
   <h1>{atem.state._pin}</h1>
   <a href="#switcher" class="tab"><Feather icon="grid"/>Switcher</a>
   <a href="#media" class="tab"><Feather icon="film"/>Media</a>
+  <a href="#macros" class="tab"><Feather icon="box"/>Macros</a>
   <span class="tab connection-status" class:connected={ws.readyState === 1}
         title="Connection status: green=connected, red=disconnected">
     {#if ws.readyState === 1}<Feather icon="zap"/>{:else}<Feather icon="alert-triangle"/>{/if}
@@ -266,4 +267,16 @@
     <input type="file" name="media" on:change={e=>atem.uploadMediaFile(e.target.files[0], 1)}/>
   </div>
 </div><!-- screen media-->
+
+<div id="macros" class="screen">
+  <h2>Macros</h2>
+  <div class="well">
+    <div class="button"
+      class:red={false}
+      on:click={e=>atem.runMacro(0)}>
+    <p>Test</p>
+    </div>
+  </div>
+</div> <!-- screen macros -->
+
 {/each}
