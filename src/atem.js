@@ -248,6 +248,19 @@ class ATEM {
                     "rawGain": 32768
                 }
             },
+            "macro": {
+                "numberOfMacros": 2,
+                "macros":  {
+                    "0": {
+                        id: 0,
+                        name: "Macro 1"
+                    },
+                    "1": {
+                        id: 1,
+                        name: "Macro 2"
+                    }
+                }
+            },
             "device": 0,
             "_ver0": 2,
             "_ver1": 27,
@@ -390,6 +403,11 @@ class ATEM {
     }
     fadeToBlack() {
         this.sendMessage({ method: 'fadeToBlack', params: { device: this.state.device } });
+    }
+
+    runMacro(number) {
+        console.log("Running Macro: ", number);
+        this.sendMessage({ method: 'runMacro', params: {number} });
     }
 
     uploadMediaFile(file, number) {
