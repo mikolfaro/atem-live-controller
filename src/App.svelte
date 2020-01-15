@@ -277,11 +277,16 @@
 <div id="macros" class="screen">
   <h2>Macros</h2>
   <div class="well">
-    <div class="button"
+    {#if atem.state.macros}
+    {#each Object.entries(atem.state.macros) as macro }
+    <div class="button button-wide"
       class:red={false}
-      on:click={e=>atem.runMacro(0)}>
-    <p>Test</p>
+      on:click={e=>atem.runMacro(macro[0])}
+      title={macro[1].description}>
+    <p>{macro[1].name}</p>
     </div>
+    {/each}
+    {/if}
   </div>
 </div> <!-- screen macros -->
 
