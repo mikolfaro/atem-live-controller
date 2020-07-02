@@ -255,15 +255,17 @@
 <div id="media" class="screen">
   <h2>Media</h2>
   <div class="media-thumb well"
-       on:drop={e=>atem.uploadMediaFile(e.dataTransfer.files[0], 1)}
-       on:click={e=>this.querySelector('input').click()}>
-    <img alt="Upload Media 1" />
+       on:drop={e=>atem.uploadMediaFile(e.dataTransfer.files[0], 1)}>
+    <img alt="Upload Media 1"
+     on:click={e=>e.target.parentNode.querySelector('input').click()}
+    />
     <input type="file" name="media" on:change={e=>atem.uploadMediaFile(e.target.files[0], 0)}/>
   </div>
   <div class="media-thumb well"
-       on:drop={e=>atem.uploadMediaFile(e.dataTransfer.files[0], 2)}
-       on:click={e=>this.querySelector('input').click()}>
-    <img alt="Upload Media 2" />
+       on:drop={e=>atem.uploadMediaFile(e.dataTransfer.files[0], 2)}>
+    <img alt="Upload Media 2"
+     on:click={e=>e.target.parentNode.querySelector('input').click()}
+    />
     <input type="file" name="media" on:change={e=>atem.uploadMediaFile(e.target.files[0], 1)}/>
   </div>
 </div><!-- screen media-->
