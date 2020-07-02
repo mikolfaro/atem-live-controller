@@ -109,7 +109,7 @@ section h3 {
 }
 
 section.transition {
-  flex-grow: 1;
+  flex-grow: 0;
   /* margin: 0 1rem; */
 }
 

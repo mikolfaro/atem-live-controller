@@ -69,15 +69,6 @@
     doConnect();
     document.addEventListener("keyup", onKeyUp);
   });
-
-  function sendMessage(data) {
-    if (ws.readyState = WebSocket.OPEN) {
-      ws.send(JSON.stringify(data));
-    } else {
-      console.log("sendMessage failed: Websocket not connected");
-    }
-  }
-
 </script>
 
 {#each switchers as atem}
