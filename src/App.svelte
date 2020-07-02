@@ -10,7 +10,10 @@
 
   function doConnect() {
     console.debug("Opening websocket...");
-    ws = new WebSocket(((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.host + "/ws");
+    let url  = window.location + "";
+    url = url.slice(0, url.lastIndexOf("/"));
+    url = url.replace("http", "ws");
+    ws = new WebSocket(url + "/ws");
     ws.addEventListener("open", function(event) {
       console.log("Websocket opened");
       intervalID = clearTimeout(intervalID);
@@ -66,15 +69,6 @@
     doConnect();
     document.addEventListener("keyup", onKeyUp);
   });
-
-  function sendMessage(data) {
-    if (ws.readyState = WebSocket.OPEN) {
-      ws.send(JSON.stringify(data));
-    } else {
-      console.log("sendMessage failed: Websocket not connected");
-    }
-  }
-
 </script>
 
 {#each switchers as atem}
@@ -261,15 +255,17 @@
 <div id="media" class="screen">
   <h2>Media</h2>
   <div class="media-thumb well"
-       on:drop={e=>atem.uploadMediaFile(e.dataTransfer.files[0], 1)}
-       on:click={e=>this.querySelector('input').click()}>
-    <img alt="Upload Media 1" />
+       on:drop={e=>atem.uploadMediaFile(e.dataTransfer.files[0], 1)}>
+    <img alt="Upload Media 1"
+     on:click={e=>e.target.parentNode.querySelector('input').click()}
+    />
     <input type="file" name="media" on:change={e=>atem.uploadMediaFile(e.target.files[0], 0)}/>
   </div>
   <div class="media-thumb well"
-       on:drop={e=>atem.uploadMediaFile(e.dataTransfer.files[0], 2)}
-       on:click={e=>this.querySelector('input').click()}>
-    <img alt="Upload Media 2" />
+       on:drop={e=>atem.uploadMediaFile(e.dataTransfer.files[0], 2)}>
+    <img alt="Upload Media 2"
+     on:click={e=>e.target.parentNode.querySelector('input').click()}
+    />
     <input type="file" name="media" on:change={e=>atem.uploadMediaFile(e.target.files[0], 1)}/>
   </div>
 </div><!-- screen media-->
