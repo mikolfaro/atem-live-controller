@@ -2,4 +2,6 @@
 config.json
 node_modules/
 public/js/
+public/bundle.js
+public/bundle.js.map
 .vscode/

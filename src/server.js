@@ -110,6 +110,9 @@ app.ws('/ws', function(ws, req) {
       case 'autoDownstreamKey':
         atem[method](params.number);
       break;
+      case 'runMacro':
+        atem[method](params.number);
+      break;
       case 'uploadMedia':
         let matches = params.media.match(/^data:(\w+\/\w+);base64,(.*)$/);
         if (matches[1] == 'image/png') {
