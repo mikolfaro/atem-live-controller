@@ -1,13 +1,8 @@
 <script>
     import Feather from "../components/Feather.svelte";
 
-    export let location
-
-    const switchers = [{
-        state: { _pin: "Atem Mini" },
-        connected: true,
-    }]
-    const ws = { readyState: 1 }
+    export let switchers
+    export let ws
 
     const pageName = "Camera"
 </script>
