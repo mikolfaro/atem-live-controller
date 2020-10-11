@@ -4,9 +4,10 @@ const ATEM = require('applest-atem');
 const FileUploader = ATEM.FileUploader
 const config     = require('../config.json');
 const fs         = require('fs');
+const path        = require('path')
 
 const app = express();
-var expressWs = require('express-ws')(app);
+let expressWs = require('express-ws')(app);
 
 let atem;
 const switchers = [];
@@ -14,7 +15,7 @@ const switchers = [];
 let CLIENTS = expressWs.getWss().clients;
 
 let device = 0;
-for (var switcher of config.switchers) {
+for (let switcher of config.switchers) {
   console.log('Initializing switcher', switcher.addr, switcher.port)
   atem = new ATEM;
   atem.event.setMaxListeners(5);
@@ -49,7 +50,7 @@ app.use(fileUpload({
 
 app.post('/uploadMedia', function (req, res) {
   console.log(req.files.media); // the uploaded file object
-  if (Object.keys(req.files).length == 0) {
+  if (Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
   let fileUploader = new ATEM.FileUploader(switchers[0]);
@@ -115,7 +116,7 @@ app.ws('/ws', function(ws, req) {
       break;
       case 'uploadMedia':
         let matches = params.media.match(/^data:(\w+\/\w+);base64,(.*)$/);
-        if (matches[1] == 'image/png') {
+        if (matches[1] === 'image/png') {
           const buffer = Buffer.from(matches[2], 'base64');
           // fs.writeFileSync('media'+number+'.png', buffer);
           const fileUploader = new FileUploader(atem);
@@ -127,5 +128,9 @@ app.ws('/ws', function(ws, req) {
     }
   });
 });
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.resolve(__dirname + '/../public/index.html'))
+})
 
 app.listen(config.server.port, config.server.host);

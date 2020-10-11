@@ -1,7 +1,8 @@
-import App from './App.svelte';
+import RoutedApp from './RoutedApp.svelte';
 
-var app = new App({
-	target: document.body
+let app = new RoutedApp({
+	target: document.body,
+	hydrate: true
 });
 
 export default app;

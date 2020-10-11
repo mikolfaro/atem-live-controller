@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { ATEM } from "./atem.js";
-  import Feather from "./Feather.svelte";
+  import Feather from "./components/Feather.svelte";
 
   let switchers = [];
 

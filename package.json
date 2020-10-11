@@ -17,6 +17,7 @@
     "express-fileupload": "^1.1.7-alpha.3",
     "express-ws": "^4.0.0",
     "feather-icons": "^4.28.0",
+    "svelte-routing": "^1.4.2",
     "ws": "^7.3.0"
   },
   "devDependencies": {
