@@ -10,7 +10,9 @@
 {#each switchers as atem}
     <header>
         <h1>{pageName} - {atem.state._pin}</h1>
-        <a href="#switcher" class="tab"><Feather icon="grid"/>Switcher</a>
+        <a href="/console" class="tab"><Feather icon="grid"/>Console</a>
+        <a href="/camera" class="tab"><Feather icon="camera" />Camera</a>
+
         <span class="tab connection-status" class:connected={ws.readyState === 1}
               title="Connection status: green=connected, red=disconnected">
             {#if ws.readyState === 1}<Feather icon="zap"/>{:else}<Feather icon="alert-triangle"/>{/if}

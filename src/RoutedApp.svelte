@@ -1,15 +1,13 @@
 <script>
     import { onMount } from "svelte";
-    import { Router, Link, Route } from "svelte-routing"
+    import Router from 'svelte-spa-router'
+    import { wrap } from 'svelte-spa-router/wrap'
 
     import Camera from "./routes/Camera.svelte"
     import Console from "./routes/Console.svelte"
     import {ATEM} from "./atem";
 
-    export let url = "";
-
     let switchers = [];
-
     let ws = { readyState: 0};
     let intervalID = 0;
 
@@ -55,7 +53,7 @@
     }
 
     function onKeyUp(event) {
-        var key = event.key || event.keyCode;
+        const key = event.key;
         if (key === " " || key === 32) {
             event.preventDefault();
             switchers[0].cutTransition();
@@ -75,15 +73,14 @@
 
         document.addEventListener("keyup", onKeyUp)
     })
+
+    const routes = {
+        '/console': wrap({ component: Console, props: { switchers: switchers, ws: ws }}),
+        '/camera': wrap({ component: Camera, props: { switchers: switchers, ws: ws }}),
+    }
+    let props = { switchers: switchers, ws: ws }
 </script>
 
-<Router url="{ url }">
-    <nav>
-        <Link to="console">Console</Link>
-        <Link to="camera">Camera</Link>
-    </nav>
-    <div>
-        <Route path="console" component="{Console}" bind:switchers="{switchers}" bind:ws="{ws}" />
-        <Route path="camera" component="{Camera}" switchers="{switchers}" ws="{ws}" />
-    </div>
-</Router>
+
+
+<Router {routes} />

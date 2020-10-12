@@ -1,4 +1,6 @@
 <script>
+    import {link} from 'svelte-spa-router'
+    import active from 'svelte-spa-router/active'
     import Feather from "../components/Feather.svelte";
 
     export let switchers
@@ -10,9 +12,10 @@
 {#each switchers as atem}
     <header>
         <h1>{pageName} - {atem.state._pin}</h1>
-        <a href="#switcher" class="tab"><Feather icon="grid"/>Switcher</a>
+        <a href="/console" use:link class="tab"><Feather icon="grid"/>Console</a>
         <a href="#media" class="tab"><Feather icon="film"/>Media</a>
         <a href="#macros" class="tab"><Feather icon="box"/>Macros</a>
+        <a href="/camera" class="tab"><Feather icon="camera" />Camera</a>
         <span class="tab connection-status" class:connected={ws.readyState === 1}
               title="Connection status: green=connected, red=disconnected">
             {#if ws.readyState === 1}<Feather icon="zap"/>{:else}<Feather icon="alert-triangle"/>{/if}
@@ -24,7 +27,6 @@
             ATEM
         </span>
     </header>
-
 
     <div id="switcher" class="screen">
         <section class="channels">
