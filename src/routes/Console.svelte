@@ -4,6 +4,7 @@
 
     export let switchers
     export let ws
+    export let intercom
 
     const pageName = "Console"
 </script>
@@ -36,6 +37,7 @@
                             class="button"
                             class:red={atem.isProgramChannel(channel)}
                             class:green={atem.isPreviewChannel(channel)}
+                            class:alert={intercom.cams[channel.label] && intercom.cams[channel.label].alert}
                             on:click={e => atem.changePreview(channel)}>
                         <p>{channel.label}</p>
                     </div>

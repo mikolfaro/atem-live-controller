@@ -41,7 +41,7 @@
                              class="button"
                              class:red={atem.isProgramChannel(channel)}
                              class:green={atem.isPreviewChannel(channel)}
-                             class:blinking={intercom.cams[channel.label] && intercom.cams[channel.label].alert}
+                             class:alert={intercom.cams[channel.label] && intercom.cams[channel.label].alert}
                              on:click={e => toggleAlert(channel.label)}>
 
                             <p>{channel.label}</p>

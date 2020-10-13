@@ -39,7 +39,7 @@ for (let switcher of config.switchers) {
 }
 
 function broadcast(message) {
-  for (var client of CLIENTS) {
+  for (let client of CLIENTS) {
     client.send(message);
   }
 }
@@ -126,9 +126,11 @@ app.ws('/ws', function(ws, req) {
         }
         break;
       case 'alertOn':
+        broadcast(message);
         console.log("Alert on")
         break;
       case 'alertOff':
+        broadcast(message);
         console.log("Alert off")
     }
   });

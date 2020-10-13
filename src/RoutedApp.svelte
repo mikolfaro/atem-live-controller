@@ -10,7 +10,7 @@
     export let url = ""
     let switchers = [];
     let ws = { readyState: 0};
-    let intercom = {};
+    let intercom;
     let intervalID = 0;
 
     function doConnect() {
@@ -32,7 +32,6 @@
         ws.addEventListener("message", function(event) {
             let data = JSON.parse(event.data);
             let device = data.device || 0;
-            console.log(data);
             switch (data.method) {
                 case 'connect':
                     switchers[device].connected = true;
@@ -40,9 +39,20 @@
                 case 'disconnect':
                     switchers[device].connected = false;
                     break;
+                case 'alertOn':
+                    console.log("AlertOn", data)
+                    intercom.alertOn(data.params.cam)
+                    intercom = intercom
+                    break;
+                case 'alertOff':
+                    console.log("AlertOff", data)
+                    intercom.alertOff(data.params.cam)
+                    intercom = intercom
+                    break;
                 default:
                     switchers[device].connected = true;
                     switchers[device].state = data;
+                    break;
             }
             return data;
         });

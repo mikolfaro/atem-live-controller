@@ -30,4 +30,20 @@ export default class Intercom {
 
         return this.cams[cam].alert
     }
+
+    alertOn(cam) {
+        if (!this.cams[cam]) {
+            this.cams[cam] = {alert: true}
+        } else {
+            this.cams[cam].alert = true
+        }
+    }
+
+    alertOff(cam) {
+        if (!this.cams[cam]) {
+            this.cams[cam] = {alert: false}
+        } else {
+            this.cams[cam].alert = false
+        }
+    }
 }
