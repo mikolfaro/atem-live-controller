@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import scss from 'rollup-plugin-scss';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -21,9 +22,9 @@ export default {
 			dev: !production,
 			// we'll extract any component CSS out into
 			// a separate file  better for performance
-			css: css => {
-				css.write('public/bundle.css');
-			}
+			// css: css => {
+			// 	css.write('public/bundle.css');
+			// },
 		}),
 
 		// If you have external dependencies installed from
@@ -33,6 +34,7 @@ export default {
 		// https://github.com/rollup/rollup-plugin-commonjs
 		resolve({ browser: true }),
 		commonjs(),
+		scss(),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production

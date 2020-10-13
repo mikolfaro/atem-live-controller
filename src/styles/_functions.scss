@@ -1,0 +1,10 @@
+@mixin backlit-shadow($main-color, $center-color) {
+  box-shadow: 0 0 0 2px black,
+              0 1px 1px 0 rgba(255, 255, 255, 0.3) inset,
+              0 0 0 50px rgba(255, 255, 255, 0.1) inset,
+              0 0 30px 5px $main-color inset;
+
+  &:before {
+    background-color: rgba($center-color, 0.7);
+  }
+}
