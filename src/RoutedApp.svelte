@@ -1,12 +1,12 @@
 <script>
     import { onMount } from "svelte";
-    import Router from 'svelte-spa-router'
-    import { wrap } from 'svelte-spa-router/wrap'
+    import { Router, Route } from "svelte-routing";
 
     import Camera from "./routes/Camera.svelte"
     import Console from "./routes/Console.svelte"
     import {ATEM} from "./atem";
 
+    export let url = ""
     let switchers = [];
     let ws = { readyState: 0};
     let intervalID = 0;
@@ -70,17 +70,17 @@
 
     onMount(() => {
         doConnect();
-
         document.addEventListener("keyup", onKeyUp)
     })
-
-    const routes = {
-        '/console': wrap({ component: Console, props: { switchers: switchers, ws: ws }}),
-        '/camera': wrap({ component: Camera, props: { switchers: switchers, ws: ws }}),
-    }
-    let props = { switchers: switchers, ws: ws }
 </script>
 
 
 
-<Router {routes} />
+<Router url="{url}">
+    <Route path="console">
+        <Console ws="{ws}" switchers="{switchers}" />
+    </Route>
+    <Route path="camera">
+        <Camera ws="{ws}" switchers="{switchers}" />
+    </Route>
+</Router>

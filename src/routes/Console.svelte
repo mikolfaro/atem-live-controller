@@ -1,7 +1,6 @@
 <script>
-    import {link} from 'svelte-spa-router'
-    import active from 'svelte-spa-router/active'
     import Feather from "../components/Feather.svelte";
+    import { link } from "svelte-routing"
 
     export let switchers
     export let ws
