@@ -274,7 +274,7 @@ class ATEM {
     }
 
     sendMessage(data) {
-        if (this.websocket.readyState == WebSocket.OPEN) {
+        if (this.websocket.readyState === WebSocket.OPEN) {
             const message = JSON.stringify(data);
             // console.log('sendMessage', message);
             this.websocket.send(message);

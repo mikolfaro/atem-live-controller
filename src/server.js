@@ -87,33 +87,33 @@ app.ws('/ws', function(ws, req) {
       case 'cutTransition':
       case 'fadeToBlack':
         atem[method]();
-      break;
+        break;
       case 'changeUpstreamKeyState':
       case 'changeUpstreamKeyNextState':
         atem[method](params.number, params.state);
-      break;
+        break;
       case 'changeDownstreamKeyOn':
       case 'changeDownstreamKeyTie':
         atem[method](params.number, params.state);
-      break;
+        break;
       case 'changeTransitionPreview':
         atem[method](params.state, params.me);
-      break;
+        break;
       case 'changeTransitionPosition':
         atem[method](params.position);
-      break;
+        break;
       case 'changeTransitionType':
         atem[method](params.type);
-      break;
+        break;
       case 'changeUpstreamKeyNextBackground':
         atem[method](params.state);
-      break;
+        break;
       case 'autoDownstreamKey':
         atem[method](params.number);
-      break;
+        break;
       case 'runMacro':
         atem[method](params.number);
-      break;
+        break;
       case 'uploadMedia':
         let matches = params.media.match(/^data:(\w+\/\w+);base64,(.*)$/);
         if (matches[1] === 'image/png') {
@@ -124,7 +124,12 @@ app.ws('/ws', function(ws, req) {
         } else {
           console.error('Uploaded image is not png');
         }
-      break;
+        break;
+      case 'alertOn':
+        console.log("Alert on")
+        break;
+      case 'alertOff':
+        console.log("Alert off")
     }
   });
 });

@@ -3,8 +3,14 @@
 
     export let switchers
     export let ws
+    export let intercom
 
     const pageName = "Camera"
+
+    function toggleAlert(label) {
+        intercom.toggleAlert(label)
+        intercom = intercom
+    }
 </script>
 
 {#each switchers as atem}
@@ -30,13 +36,17 @@
             <h3>Program & Preview</h3>
             <div class="well">
                 {#each atem.visibleChannels as channel}
-                    <div
-                            class="button"
-                            class:red={atem.isProgramChannel(channel)}
-                            class:green={atem.isPreviewChannel(channel)}
-                            on:click={e => atem.changePreview(channel)}>
-                        <p>{channel.label}</p>
-                    </div>
+                    {#if channel.label.startsWith("CAM") }
+                        <div id="{channel.label}"
+                             class="button"
+                             class:red={atem.isProgramChannel(channel)}
+                             class:green={atem.isPreviewChannel(channel)}
+                             class:blinking={intercom.cams[channel.label] && intercom.cams[channel.label].alert}
+                             on:click={e => toggleAlert(channel.label)}>
+
+                            <p>{channel.label}</p>
+                        </div>
+                    {/if}
                 {/each}
             </div>
         </section>

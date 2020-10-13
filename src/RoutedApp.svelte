@@ -5,10 +5,12 @@
     import Camera from "./routes/Camera.svelte"
     import Console from "./routes/Console.svelte"
     import {ATEM} from "./atem";
+    import Intercom from "./intercom";
 
     export let url = ""
     let switchers = [];
     let ws = { readyState: 0};
+    let intercom = {};
     let intervalID = 0;
 
     function doConnect() {
@@ -23,6 +25,7 @@
             intervalID = clearTimeout(intervalID);
             switchers[0] = new ATEM();
             switchers[0].setWebsocket(ws);
+            intercom = new Intercom(ws);
             // update svelte
             ws = ws;
         });
@@ -83,9 +86,9 @@
 
 <Router url="{url}">
     <Route path="console">
-        <Console ws="{ws}" switchers="{switchers}" />
+        <Console ws="{ws}" switchers="{switchers}" intercom="{intercom}" />
     </Route>
     <Route path="camera">
-        <Camera ws="{ws}" switchers="{switchers}" />
+        <Camera ws="{ws}" switchers="{switchers}" intercom="{intercom}" />
     </Route>
 </Router>
