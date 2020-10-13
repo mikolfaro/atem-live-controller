@@ -17,6 +17,7 @@
         url = url.slice(0, url.lastIndexOf("/"));
         url = url.replace("http", "ws");
         ws = new WebSocket(url + "/ws");
+        intervalID = clearTimeout(intervalID);
         ws.addEventListener("open", function(event) {
             console.log("Websocket opened");
             intervalID = clearTimeout(intervalID);
@@ -43,12 +44,16 @@
             return data;
         });
         ws.addEventListener("error", function() {
-            console.log("Websocket error");
-            intervalID = setTimeout(doConnect, 1000);
+            if (!intervalID) {
+                console.log("Websocket error");
+                intervalID = setTimeout(doConnect, 1000);
+            }
         });
         ws.addEventListener("close", function() {
-            console.log("Websocket closed");
-            intervalID = setTimeout(doConnect, 1000);
+            if (!intervalID) {
+                console.log("Websocket closed");
+                intervalID = setTimeout(doConnect, 1000);
+            }
         });
     }
 
