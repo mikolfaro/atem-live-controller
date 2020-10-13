@@ -24,4 +24,21 @@
             ATEM
         </span>
     </header>
+
+    <div id="switcher" class="screen">
+        <section class="channels">
+            <h3>Program & Preview</h3>
+            <div class="well">
+                {#each atem.visibleChannels as channel}
+                    <div
+                            class="button"
+                            class:red={atem.isProgramChannel(channel)}
+                            class:green={atem.isPreviewChannel(channel)}
+                            on:click={e => atem.changePreview(channel)}>
+                        <p>{channel.label}</p>
+                    </div>
+                {/each}
+            </div>
+        </section>
+    </div>
 {/each}
